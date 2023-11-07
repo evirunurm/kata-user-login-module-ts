@@ -10,4 +10,9 @@ export class FacebookSessionManager implements SessionManager {
         //Imaginad que esto en realidad realiza una llamada al API de Facebook
         return (Math.random() * 100)
     }
+
+    logout(): boolean {
+        //Imaginad que esto en realidad realiza una llamada al API de Facebook
+        return Math.random() < 0.5
+    }
 }

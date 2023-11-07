@@ -9,7 +9,7 @@ export class StubSessionManager implements SessionManager {
         throw new Error("I'm a stub, this method should not used in this case")
     }
 
-    logout(username:string):string{
+    logout(username: string): boolean {
         throw new Error("I'm a stub, this method should not be used")
     }
 }

@@ -1,22 +1,34 @@
 import {SessionManager} from "../sessionManager";
+import {FacebookSessionManager} from "../facebookSessionManager";
 
 export class MockSessionManager implements SessionManager {
+    private _logoutHaveBeenCalled: boolean //flag que nos indica si el método logout ha sido invocado
+    private _logoutBehaviour: 'userNotLoggedIn' | 'serviceNotAvailable'
+
+    constructor(logoutBehaviour: 'userNotLoggedIn' | 'serviceNotAvailable') {
+        this._logoutHaveBeenCalled = false
+        this._logoutBehaviour = logoutBehaviour
+    }
+
     getSessions(): number {
-        throw new Error("I,m the mock, this method should not be used")
+        return 5
     }
 
-    login(username: string, password: string): boolean {
-        throw new Error("I,m the mock, this method should not be used")
+    login(userName: string, password: string): boolean {
+        return true
     }
 
-    logout(username: string): string {
-        if (username === "ServiceNotAvailable") {
-            throw new Error("service not available")
-        } else if(username==="UserNotAvailable"){
-            throw new Error("User not logged in Facebook")
+    logout(username: string): boolean {
+        this._logoutHaveBeenCalled = true;
+        if (this._logoutBehaviour === 'userNotLoggedIn' ) {
+            throw new Error("UserNotLoggedIn")
         }
 
-        return "User logged out"
+        throw new Error("ServiceNotAvailable")
+    }
+
+    get logoutHaveBeenCalled(): boolean {
+        return this._logoutHaveBeenCalled;
     }
 
 }

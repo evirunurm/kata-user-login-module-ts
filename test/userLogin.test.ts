@@ -68,50 +68,43 @@ describe('User Service Login', () => {
         expect(response).toEqual('Login incorrecto')
     })
 
-    it("should be able to logout a user", () => {
-        const service = new UserLoginService(new SpyOnSessionManager());
-        const existingUser = new User("existingUser");
+    it('should logout a user in case it is logged',()=>{
+        const spySessionManager = new SpyOnSessionManager()
+        const service= new UserLoginService(spySessionManager)
+        const loggedUser= new User("Javier")
+        const loggedUser2 = new User("Denis")
+        service.manualLogin(loggedUser);
+        service.manualLogin(loggedUser2)
 
-        service.manualLogin(existingUser)
-        const response = service.logout(existingUser)
-        const logoutParams=service.getLogoutParams()
-        const numberOfCalls=service.getNumberOfLogoutCallas()
+        const response = service.logout(loggedUser)
 
+        expect(service.getLoggedUsers()).not.toContain("Javier") // comprobar que la sesión del usuario ha expirado
+        expect(spySessionManager.logoutHaveBeenCalled).toBeTruthy()
         expect(response).toEqual("User logged out")
-        expect(logoutParams).toEqual(existingUser.getUserName())
-        expect(numberOfCalls).toEqual(1)
     })
 
-    it("should not be able to logout not registered users",()=>{
-        const service= new UserLoginService(new DummySessionManager())
-        const notExistingUser= new User("Javier")
+    it('should manage service not available error', ()=> {
+        const mockSessionManager = new MockSessionManager('serviceNotAvailable')
+        const service= new UserLoginService(mockSessionManager)
+        const loggedUser= new User("Javier")
+        service.manualLogin(loggedUser);
 
-        const response= service.logout(notExistingUser)
+        const response = service.logout(loggedUser)
 
-        expect(response).toEqual("User not found")
+        expect(mockSessionManager.logoutHaveBeenCalled).toBeTruthy()
+        expect(response).toEqual('Service not available')
     })
 
-    it('should manage logout service not available exception',()=>{
-        const service= new UserLoginService(new MockSessionManager())
-        const serviceNotAvailableUser = new User("ServiceNotAvailable");
-        const expectedResponse:string="service not available"
+    it('should manage user not logged in facebook', ()=> {
+        const mockSessionManager = new MockSessionManager('userNotLoggedIn')
+        const service= new UserLoginService(mockSessionManager)
+        const loggedUser= new User("Javier")
+        service.manualLogin(loggedUser);
 
-        service.manualLogin(serviceNotAvailableUser)
-        const response=service.logout(serviceNotAvailableUser);
+        const response = service.logout(loggedUser)
 
-        expect(response).toEqual(expectedResponse)
+        expect(mockSessionManager.logoutHaveBeenCalled).toBeTruthy()
+        expect(response).toEqual('User not logged in Facebook')
     })
-
-    it('should manage not logged user exception',()=>{
-        const service= new UserLoginService(new MockSessionManager())
-        const notLoggedUser = new User("UserNotAvailable");
-        const expectedResponse:string="User not logged in Facebook"
-
-        service.manualLogin(notLoggedUser)
-        const response=service.logout(notLoggedUser);
-
-        expect(response).toEqual(expectedResponse)
-    })
-
 
 })

@@ -5,8 +5,6 @@ import {SessionManager} from "./sessionManager";
 export class UserLoginService {
     private loggedUsers: User[] = []
     private sessionManager: SessionManager
-    private logoutCalls = 0;
-    private logoutParams;
 
     constructor(sessionManager: SessionManager) {
         this.sessionManager = sessionManager
@@ -46,24 +44,17 @@ export class UserLoginService {
             }
 
             this.loggedUsers = this.loggedUsers.filter(arrayUser => arrayUser != user);
-            this.logoutCalls++;
-            this.logoutParams = user.getUserName();
-            return this.sessionManager.logout(user.getUserName())
+            this.sessionManager.logout(user.getUserName())
+            return "User logged out"
 
         } catch (e) {
-            return e.message
+            if (e.message === 'ServiceNotAvailable') {
+                return 'Service not available'
+            }
+
+            return 'User not logged in Facebook'
         }
     }
-
-
-    getLogoutParams(): string {
-        return this.logoutParams
-    }
-
-    getNumberOfLogoutCallas(): number {
-        return this.logoutCalls
-    }
-
 
     private isUserAlreadyLogged = (user: User) => this.loggedUsers.some(loggedUser => loggedUser.getUserName() === user.getUserName())
 }

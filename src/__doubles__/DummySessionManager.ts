@@ -9,7 +9,7 @@ export class DummySessionManager implements SessionManager {
         throw new Error("I'am a dummy, this method should not be used")
     };
 
-    logout(username:string):string{
+    logout(username: string): boolean {
         throw new Error("I'm a dummy, this method should not be used")
     };
 
