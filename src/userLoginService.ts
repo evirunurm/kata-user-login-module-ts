@@ -4,10 +4,10 @@ import {SessionManager} from "./sessionManager";
 
 export class UserLoginService {
     private loggedUsers: User[] = []
-    private sessionManager:SessionManager
+    private sessionManager: SessionManager
 
-    constructor(sessionManager:SessionManager) {
-        this.sessionManager=sessionManager
+    constructor(sessionManager: SessionManager) {
+        this.sessionManager = sessionManager
     }
 
     public manualLogin = (user: User): string => {
@@ -19,13 +19,22 @@ export class UserLoginService {
         return "User successfully logged in"
     }
 
-    getLoggedUsers(){
-        return this.loggedUsers.map(user=>user.getUserName())
+    getLoggedUsers() {
+        return this.loggedUsers.map(user => user.getUserName())
     }
 
-    getExternalSessions():number{
-        const externalLoggedUsers= this.sessionManager.getSessions()
-        return  externalLoggedUsers;
+    getExternalSessions(): number {
+        const externalLoggedUsers = this.sessionManager.getSessions()
+        return externalLoggedUsers;
+    }
+
+    login(username: string, password: string): string {
+        if (!this.sessionManager.login(username, password)) {
+            return "Login incorrecto"
+        }
+
+        this.loggedUsers.push(new User(username));
+        return "Login correcto"
     }
 
 

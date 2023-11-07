@@ -2,6 +2,7 @@ import {UserLoginService} from "../src/userLoginService";
 import {User} from "../src/user";
 import {DummySessionManager} from "../src/__doubles__/DummySessionManager";
 import {StubSessionManager} from "../src/__doubles__/StubSessionManager";
+import {FakeSessionManager} from "../src/__doubles__/FakeSessionManager";
 
 
 describe('User Service Login', () => {
@@ -48,5 +49,22 @@ describe('User Service Login', () => {
 
         expect(loggedUsers).toEqual(4)
     })
+
+    it('should log a user if login action is successful',()=>{
+        const service= new UserLoginService(new FakeSessionManager())
+
+        const response= service.login("Denis","contraseñaCorrecta")
+
+        expect(response).toEqual('Login correcto')
+    })
+
+    it('should not log a user if login action is denied',()=>{
+        const service= new UserLoginService(new FakeSessionManager())
+
+        const response= service.login("Denis","contraseñaIncorrecta")
+
+        expect(response).toEqual('Login incorrecto')
+    })
+
 
 })
