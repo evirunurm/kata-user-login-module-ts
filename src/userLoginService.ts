@@ -40,7 +40,7 @@ export class UserLoginService {
     }
 
     logout(user: User): string {
-        // try {
+        try {
             if (!this.loggedUsers.includes(user)) {
                 return "User not found"
             }
@@ -50,9 +50,9 @@ export class UserLoginService {
             this.logoutParams = user.getUserName();
             return this.sessionManager.logout(user.getUserName())
 
-        // } catch (e) {
-        //     return e.message
-        // }
+        } catch (e) {
+            return e.message
+        }
     }
 
 

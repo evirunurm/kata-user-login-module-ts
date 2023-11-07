@@ -4,6 +4,7 @@ import {DummySessionManager} from "../src/__doubles__/DummySessionManager";
 import {StubSessionManager} from "../src/__doubles__/StubSessionManager";
 import {FakeSessionManager} from "../src/__doubles__/FakeSessionManager";
 import {SpyOnSessionManager} from "../src/__doubles__/SpyOnSessionManager";
+import {MockSessionManager} from "../src/__doubles__/MockSessionManager";
 
 
 describe('User Service Login', () => {
@@ -90,10 +91,26 @@ describe('User Service Login', () => {
         expect(response).toEqual("User not found")
     })
 
-    it('should manage logout exceptions',()=>{
-        const service= new UserLoginService(new DummySessionManager())
-        const user= new User("María")
+    it('should manage logout service not available exception',()=>{
+        const service= new UserLoginService(new MockSessionManager())
+        const serviceNotAvailableUser = new User("ServiceNotAvailable");
+        const expectedResponse:string="service not available"
 
+        service.manualLogin(serviceNotAvailableUser)
+        const response=service.logout(serviceNotAvailableUser);
+
+        expect(response).toEqual(expectedResponse)
+    })
+
+    it('should manage not logged user exception',()=>{
+        const service= new UserLoginService(new MockSessionManager())
+        const notLoggedUser = new User("UserNotAvailable");
+        const expectedResponse:string="User not logged in Facebook"
+
+        service.manualLogin(notLoggedUser)
+        const response=service.logout(notLoggedUser);
+
+        expect(response).toEqual(expectedResponse)
     })
 
 
