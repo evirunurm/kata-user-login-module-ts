@@ -1,7 +1,14 @@
 import {User} from "./user"
+import {FacebookSessionManager} from "./facebookSessionManager";
+import {SessionManager} from "./sessionManager";
 
 export class UserLoginService {
     private loggedUsers: User[] = []
+    private sessionManager:SessionManager
+
+    constructor(sessionManager:SessionManager) {
+        this.sessionManager=sessionManager
+    }
 
     public manualLogin = (user: User): string => {
         if (this.isUserAlreadyLogged(user)) {
@@ -14,6 +21,11 @@ export class UserLoginService {
 
     getLoggedUsers(){
         return this.loggedUsers.map(user=>user.getUserName())
+    }
+
+    getExternalSessions():number{
+        const externalLoggedUsers= this.sessionManager.getSessions()
+        return  externalLoggedUsers;
     }
 
 
