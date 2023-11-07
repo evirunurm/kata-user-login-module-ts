@@ -5,6 +5,8 @@ import {SessionManager} from "./sessionManager";
 export class UserLoginService {
     private loggedUsers: User[] = []
     private sessionManager: SessionManager
+    private logoutCalls = 0;
+    private logoutParams;
 
     constructor(sessionManager: SessionManager) {
         this.sessionManager = sessionManager
@@ -35,6 +37,31 @@ export class UserLoginService {
 
         this.loggedUsers.push(new User(username));
         return "Login correcto"
+    }
+
+    logout(user: User): string {
+        // try {
+            if (!this.loggedUsers.includes(user)) {
+                return "User not found"
+            }
+
+            this.loggedUsers = this.loggedUsers.filter(arrayUser => arrayUser != user);
+            this.logoutCalls++;
+            this.logoutParams = user.getUserName();
+            return this.sessionManager.logout(user.getUserName())
+
+        // } catch (e) {
+        //     return e.message
+        // }
+    }
+
+
+    getLogoutParams(): string {
+        return this.logoutParams
+    }
+
+    getNumberOfLogoutCallas(): number {
+        return this.logoutCalls
     }
 
 

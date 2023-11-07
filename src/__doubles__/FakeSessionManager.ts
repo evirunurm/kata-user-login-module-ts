@@ -10,4 +10,8 @@ export class FakeSessionManager implements SessionManager{
     getSessions():number{
         throw new Error("I'm a fake, this method should nit be used")
     }
+
+    logout(username:string):string{
+        throw new Error("I'm a fake, this method should not be used")
+    }
 }
