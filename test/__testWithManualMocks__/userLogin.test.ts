@@ -1,10 +1,10 @@
-import {UserLoginService} from "../src/userLoginService";
-import {User} from "../src/user";
-import {DummySessionManager} from "../src/__doubles__/DummySessionManager";
-import {StubSessionManager} from "../src/__doubles__/StubSessionManager";
-import {FakeSessionManager} from "../src/__doubles__/FakeSessionManager";
-import {SpyOnSessionManager} from "../src/__doubles__/SpyOnSessionManager";
-import {MockSessionManager} from "../src/__doubles__/MockSessionManager";
+import {UserLoginService} from "../../src/userLoginService";
+import {User} from "../../src/user";
+import {DummySessionManager} from "../../src/__doubles__/DummySessionManager";
+import {StubSessionManager} from "../../src/__doubles__/StubSessionManager";
+import {FakeSessionManager} from "../../src/__doubles__/FakeSessionManager";
+import {SpyOnSessionManager} from "../../src/__doubles__/SpyOnSessionManager";
+import {MockSessionManager} from "../../src/__doubles__/MockSessionManager";
 
 
 describe('User Service Login', () => {
