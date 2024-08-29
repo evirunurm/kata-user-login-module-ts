@@ -1,5 +1,4 @@
 import {SessionManager} from "./sessionManager"
-import {User} from "./user";
 
 export class FacebookSessionManager implements SessionManager {
     login(userName: string, password: string): boolean {
