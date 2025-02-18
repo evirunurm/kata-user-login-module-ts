@@ -1,5 +1,5 @@
 export class User {
-    private userName: string
+    private readonly userName: string
 
     constructor(userName: string) {
         this.userName = userName
